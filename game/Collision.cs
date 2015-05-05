@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ namespace game
         HitInPlayer,
         HitInEnemy,
         Collide,
+        TakeHeal,
     }
 
     struct Collide
@@ -20,22 +22,41 @@ namespace game
         public CollideType Type;
         public Enemy Enemy;
         public Bullet Bullet;
+        public Heal Heal;
     }
 
     class Collision
     {
         List<Bullet> Bullets;
         List<Enemy> Enemies;
+        List<Heal> Heals;
         Player Player;
 
-        public Collision(ref List<Bullet> Bullets, ref List<Enemy> Enemies, ref Player Player) {
+        public Collision(ref List<Bullet> Bullets, ref List<Enemy> Enemies, ref Player Player, ref List<Heal> Heals) {
             this.Bullets = Bullets;
             this.Player = Player;
             this.Enemies = Enemies;
+            this.Heals = Heals;
         }
 
         public Collide Check() {
             Collide Result = new Collide();
+
+            foreach (Heal Heal in this.Heals)
+            {
+                if (IsCollides(
+                    Heal.Position, Heal.Size,
+                    Player.GetPosition(), Player.GetSize(),
+                    10, 10)
+                    )
+                {
+                    Result.Type = CollideType.TakeHeal;
+                    Result.Heal = Heal;
+                    Result.Bullet = null;
+                    Result.Enemy = null;
+                    return Result;
+                }
+            }
 
             foreach (Enemy Enemy in this.Enemies) {
                 // collide
