@@ -189,7 +189,11 @@ namespace game
                     if (collide.Type == CollideType.HitInEnemy) {
                         this.IncreaseScore();
                         this.AddExplosion(collide.Enemy);
-                        this.AddHeal(collide.Enemy);
+
+                        Random rand = new Random();
+                        if (rand.Next(5) == 0) {
+                            this.AddHeal(collide.Enemy);
+                        }
 
                         this.Enemies.Remove(collide.Enemy);
                         this.Bullets.Remove(collide.Bullet);
