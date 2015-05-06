@@ -42,19 +42,17 @@ namespace game
         public Collide Check() {
             Collide Result = new Collide();
 
-            foreach (Heal Heal in this.Heals)
-            {
+            foreach (Heal Heal in this.Heals) {
                 if (IsCollides(
-                    Heal.Position, Heal.Size,
-                    Player.GetPosition(), Player.GetSize(),
-                    10, 10)
-                    )
-                {
-                    Result.Type = CollideType.TakeHeal;
-                    Result.Heal = Heal;
-                    Result.Bullet = null;
-                    Result.Enemy = null;
-                    return Result;
+                        Heal.Position, Heal.Size,
+                        Player.GetPosition(), Player.GetSize(),
+                        10, 10)
+                    ) {
+                        Result.Type = CollideType.TakeHeal;
+                        Result.Heal = Heal;
+                        Result.Bullet = null;
+                        Result.Enemy = null;
+                        return Result;
                 }
             }
 

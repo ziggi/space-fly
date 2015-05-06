@@ -9,12 +9,10 @@ namespace game
 {
     class Player : Character
     {
+        private int Health;
+
         public Player(Image image) {
             this.SetImage(image);
-        }
-
-        public int GetSpeed() {
-            return 148813;
         }
 
         public int Shoot(ref List<Bullet> bullets) {
@@ -43,6 +41,18 @@ namespace game
             }
 
             this.SetPosition(position);
+        }
+
+        public int GetHealth() {
+            return this.Health;
+        }
+
+        public void SetHealth(int value) {
+            this.Health = value;
+        }
+
+        public void AddHealth(int value) {
+            this.Health += value;
         }
     }
 }

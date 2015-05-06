@@ -14,23 +14,19 @@ namespace game
         public Size Size { get; set; }
         private Sprite Sprite;
 
-        public Heal()
-        {
+        public Heal() {
             
         }
 
-        public Heal(Sprite Sprite)
-        {
+        public Heal(Sprite Sprite) {
             this.Sprite = Sprite;
         }
 
-        public void Update()
-        {
+        public void Update() {
             this.Sprite.Update();
         }
 
-        public void Draw(Graphics g)
-        {
+        public void Draw(Graphics g) {
             this.Sprite.Draw(g);
         }
     }
