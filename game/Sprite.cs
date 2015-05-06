@@ -36,7 +36,7 @@ namespace game
             int frame;
 
             if (this.Speed > 0) {
-                frame = Convert.ToInt32(Math.Floor(this.Index));
+                frame = Convert.ToInt32(Math.Floor(this.Index)) % this.FramesCount;
 
                 if (this.IsDone()) {
                     return;
