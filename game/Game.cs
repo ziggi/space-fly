@@ -83,6 +83,7 @@ namespace game
         private const int StepEnemyShootSpeed = 1;
 
         private const int FramesPerSecond = 60;
+        private const int ExplosionsMaxCount = 5;
 
         public void Init() {
             this.GameStatus = GameStatus.Menu;
@@ -376,6 +377,10 @@ namespace game
         }
 
         private void AddExplosion(Character Character) {
+            if (this.Explosions.Count() > Game.ExplosionsMaxCount) {
+                return;
+            }
+
             Size ExploseSize = new Size(128, 128);
             Point ExplosePos = Character.GetCenterPosition();
             ExplosePos.X -= ExploseSize.Width / 2;
