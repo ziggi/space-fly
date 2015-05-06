@@ -26,5 +26,9 @@ namespace game
         public void Draw(Graphics g) {
             this.Sprite.Draw(g);
         }
+
+        public bool IsDone() {
+            return this.Sprite.IsDone();
+        }
     }
 }

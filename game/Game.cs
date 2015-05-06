@@ -173,8 +173,13 @@ namespace game
                         }
                     }
 
-                    foreach (Explosion explosion in this.Explosions) {
-                        explosion.Update();
+                    IEnumerable<Explosion> ReverseExplosion =  this.Explosions.Reverse<Explosion>();
+                    foreach (Explosion explosion in ReverseExplosion) {
+                        if (explosion.IsDone()) {
+                            this.Explosions.Remove(explosion);
+                        } else {
+                            explosion.Update();
+                        }
                     }
 
                     foreach (Heal heal in this.Heals) {
@@ -203,7 +208,8 @@ namespace game
                 }
                 
                 if (this.GameStatus == GameStatus.Game) {
-                    foreach (Enemy enemy in this.Enemies.Reverse<Enemy>()) {
+                    IEnumerable<Enemy> ReverseEnemy = this.Enemies.Reverse<Enemy>();
+                    foreach (Enemy enemy in ReverseEnemy) {
                         int result = enemy.Move(this.Scene);
 
                         if (ticks > this.LastEnemyShootTime + this.EnemyShootDelay) {
@@ -377,7 +383,7 @@ namespace game
 
             Explosion explosion = new Explosion(new Sprite(ExplosePos,
                 game.Properties.Resources.Exp_type_A, new Point(0, 0), ExploseSize,
-                16, 40, true));
+                1, 40, true));
             this.Explosions.Add(explosion);
         }
 
