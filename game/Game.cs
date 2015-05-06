@@ -271,28 +271,20 @@ namespace game
                         this.LevelUpdated = false;
                     }
 
+                    if (collide.Type == CollideType.HitInPlayer || collide.Type == CollideType.Collide) {
+                        this.AddExplosion(this.Player);
+
+                        this.Player.AddHealth(-1);
+                        if (this.Player.GetHealth() < 1) {
+                            this.GameStatus = GameStatus.End;
+                        }
+                    }
+
                     if (collide.Type == CollideType.HitInPlayer) {
                         this.Bullets.Remove(collide.Bullet);
-                        this.AddExplosion(this.Player);
-
-                        this.Player.AddHealth(-1);
-                        this.Player.SetPosition(new Point(this.Scene.Size.Width / 2, this.Scene.Size.Height / 2));
-                        
-                        if (this.Player.GetHealth() < 1) {
-                            this.GameStatus = GameStatus.End;        
-                        }
                     } else if (collide.Type == CollideType.Collide) {
                         this.AddExplosion(collide.Enemy);
-                        this.AddExplosion(this.Player);
-
                         this.Enemies.Remove(collide.Enemy);
-
-                        this.Player.AddHealth(-1);
-                        this.Player.SetPosition(new Point(this.Scene.Size.Width / 2, this.Scene.Size.Height / 2));
-
-                        if (this.Player.GetHealth() < 1) {
-                            this.GameStatus = GameStatus.End;  
-                        }
                     }
 
                     this.LastTime = ticks;
