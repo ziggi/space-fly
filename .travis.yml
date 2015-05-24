@@ -1,4 +1,3 @@
 language: csharp
 solution: Space\ Fly.sln
-script:
-  - MONO_IOMAP=case xbuild /p:Configuration=Release Space\ Fly.sln
+env: MONO_IOMAP=case
