@@ -6,23 +6,28 @@ namespace game
     {
         private Sprite Sprite;
 
-        public Explosion() {
+        public Explosion()
+        {
 
         }
 
-        public Explosion(Sprite Sprite) {
+        public Explosion(Sprite Sprite)
+        {
             this.Sprite = Sprite;
         }
 
-        public void Update() {
+        public void Update()
+        {
             this.Sprite.Update();
         }
 
-        public void Draw(Graphics g) {
+        public void Draw(Graphics g)
+        {
             this.Sprite.Draw(g);
         }
 
-        public bool IsDone() {
+        public bool IsDone()
+        {
             return this.Sprite.IsDone();
         }
     }

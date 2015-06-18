@@ -19,95 +19,117 @@ namespace game
             public int Width;
             public Point Offset;
 
-            public void SetOffset(Point offset) {
+            public void SetOffset(Point offset)
+            {
                 this.Offset = offset;
             }
 
-            public Point GetOffset() {
+            public Point GetOffset()
+            {
                 return this.Offset;
             }
 
-            public void SetReloadTime(int time) {
+            public void SetReloadTime(int time)
+            {
                 this.ReloadTime = time;
             }
 
-            public int GetReloadTime() {
+            public int GetReloadTime()
+            {
                 return this.ReloadTime;
             }
 
-            public void SetSpeed(int speed) {
+            public void SetSpeed(int speed)
+            {
                 this.Speed = speed;
             }
 
-            public int GetSpeed() {
+            public int GetSpeed()
+            {
                 return this.Speed;
             }
 
-            public void SetWidth(int width) {
+            public void SetWidth(int width)
+            {
                 this.Width = width;
             }
 
-            public int GetWidth() {
+            public int GetWidth()
+            {
                 return this.Width;
             }
 
-            public void SetImage(Image image) {
+            public void SetImage(Image image)
+            {
                 this.Image = image;
             }
 
-            public Image GetImage() {
+            public Image GetImage()
+            {
                 return this.Image;
             }
         }
         public CShoot CharacterShoot;
 
-        public Character() {
+        public Character()
+        {
 
         }
 
-        public Character(Image image) {
+        public Character(Image image)
+        {
             this.SetImage(image);
             this.SetSize(image.Size);
             this.CharacterShoot = new CShoot();
         }
 
-        public void SetImage(Image image) {
+        public void SetImage(Image image)
+        {
             this.Image = image;
         }
 
-        public Image GetImage() {
+        public Image GetImage()
+        {
             return this.Image;
         }
 
-        public void SetProportionalSize(int width) {
+        public void SetProportionalSize(int width)
+        {
             Double proportion = Convert.ToDouble(this.Image.Width) / Convert.ToDouble(this.Image.Height);
             int height = Convert.ToInt32(Convert.ToDouble(width) / proportion);
             this.SetSize(new Size(width, height));
         }
 
-        public void SetSize(Size size) {
+        public void SetSize(Size size)
+        {
             this.Size = size;
         }
 
-        public Size GetSize() {
+        public Size GetSize()
+        {
             return this.Size;
         }
 
-        public void SetPosition(Point point) {
+        public void SetPosition(Point point)
+        {
             this.Position = point;
         }
 
-        public Point GetPosition() {
+        public Point GetPosition()
+        {
             return this.Position;
         }
 
-        public Point GetCenterPosition() {
+        public Point GetCenterPosition()
+        {
             return new Point(this.GetPosition().X + this.GetSize().Width / 2, this.GetPosition().Y + this.GetSize().Height / 2);
         }
 
-        public int Shoot(ref List<Bullet> bullets, BulletType type) {
+        public int Shoot(ref List<Bullet> bullets, BulletType type)
+        {
             int ticks = Environment.TickCount;
-            if (ticks < this.CharacterShoot.LastTime + this.CharacterShoot.GetReloadTime()) {
+            if (ticks < this.CharacterShoot.LastTime + this.CharacterShoot.GetReloadTime())
+            {
                 return 0;
             }
 
@@ -121,14 +143,15 @@ namespace game
             Point Position = this.GetPosition();
             Position.X += this.CharacterShoot.GetOffset().X - bullet.GetSize().Width / 2;
             Position.Y += this.CharacterShoot.GetOffset().Y + bullet.GetSize().Height / 4;
-            
+
             bullet.SetPosition(Position);
 
             bullets.Add(bullet);
             return 1;
         }
 
-        public void Draw(Graphics g) {
+        public void Draw(Graphics g)
+        {
             g.DrawImage(this.GetImage(), new Rectangle(this.GetPosition(), this.GetSize()));
         }
     }

@@ -16,71 +16,89 @@ namespace game
         private Size Size;
         private int Speed = -10;
         private BulletType Type;
-        
-        public Bullet() {
+
+        public Bullet()
+        {
 
         }
 
-        public Bullet(Image image) {
+        public Bullet(Image image)
+        {
             this.SetImage(image);
             this.SetSize(image.Size);
         }
 
-        public void SetSpeed(int speed) {
+        public void SetSpeed(int speed)
+        {
             this.Speed = speed;
         }
 
-        public int GetSpeed() {
+        public int GetSpeed()
+        {
             return this.Speed;
         }
 
-        public void SetImage(Image image) {
+        public void SetImage(Image image)
+        {
             this.Image = image;
         }
 
-        public Image GetImage() {
+        public Image GetImage()
+        {
             return this.Image;
         }
 
-        public void SetProportionalSize(int width) {
+        public void SetProportionalSize(int width)
+        {
             Double proportion = Convert.ToDouble(this.Image.Width) / Convert.ToDouble(this.Image.Height);
             int height = Convert.ToInt32(Convert.ToDouble(width) / proportion);
             this.SetSize(new Size(width, height));
         }
 
-        public void SetSize(Size size) {
+        public void SetSize(Size size)
+        {
             this.Size = size;
         }
 
-        public Size GetSize() {
+        public Size GetSize()
+        {
             return this.Size;
         }
 
-        public void SetPosition(Point point) {
+        public void SetPosition(Point point)
+        {
             this.Position = point;
         }
 
-        public Point GetPosition() {
+        public Point GetPosition()
+        {
             return this.Position;
         }
 
-        public void SetType(BulletType type) {
+        public void SetType(BulletType type)
+        {
             this.Type = type;
         }
 
-        public bool CheckType(BulletType type) {
-            if (this.Type == type) {
+        public bool CheckType(BulletType type)
+        {
+            if (this.Type == type)
+            {
                 return true;
             }
             return false;
         }
 
-        public int Move(Scene GameScene) {
+        public int Move(Scene GameScene)
+        {
             Point NewPosition = new Point(this.Position.X, this.Position.Y + this.GetSpeed());
 
-            if (NewPosition.Y <= -this.Size.Height) {
+            if (NewPosition.Y <= -this.Size.Height)
+            {
                 return 0;
-            } else if (NewPosition.Y >= GameScene.Size.Height) {
+            }
+            else if (NewPosition.Y >= GameScene.Size.Height)
+            {
                 return 0;
             }
 
@@ -88,7 +106,8 @@ namespace game
             return 1;
         }
 
-        public void Draw(Graphics g) {
+        public void Draw(Graphics g)
+        {
             g.DrawImage(this.GetImage(), new Rectangle(this.GetPosition(), this.GetSize()));
         }
     }

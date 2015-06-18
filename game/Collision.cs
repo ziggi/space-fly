@@ -27,48 +27,57 @@ namespace game
         List<Heal> Heals;
         Player Player;
 
-        public Collision(ref List<Bullet> Bullets, ref List<Enemy> Enemies, ref Player Player, ref List<Heal> Heals) {
+        public Collision(ref List<Bullet> Bullets, ref List<Enemy> Enemies, ref Player Player, ref List<Heal> Heals)
+        {
             this.Bullets = Bullets;
             this.Player = Player;
             this.Enemies = Enemies;
             this.Heals = Heals;
         }
 
-        public Collide Check() {
+        public Collide Check()
+        {
             Collide Result = new Collide();
 
-            foreach (Heal Heal in this.Heals) {
+            foreach (Heal Heal in this.Heals)
+            {
                 if (IsCollides(
                         Heal.Position, Heal.Size,
                         Player.GetPosition(), Player.GetSize(),
                         10, 10)
-                    ) {
-                        Result.Type = CollideType.TakeHeal;
-                        Result.Heal = Heal;
-                        Result.Bullet = null;
-                        Result.Enemy = null;
-                        return Result;
+                    )
+                {
+                    Result.Type = CollideType.TakeHeal;
+                    Result.Heal = Heal;
+                    Result.Bullet = null;
+                    Result.Enemy = null;
+                    return Result;
                 }
             }
 
-            foreach (Enemy Enemy in this.Enemies) {
+            foreach (Enemy Enemy in this.Enemies)
+            {
                 // collide
                 if (IsCollides(
                         Enemy.GetPosition(), Enemy.GetSize(),
                         Player.GetPosition(), Player.GetSize(),
                         15, 20)
-                    ) {
-                        Result.Type = CollideType.Collide;
-                        Result.Enemy = Enemy;
-                        Result.Bullet = null;
-                        return Result;
+                    )
+                {
+                    Result.Type = CollideType.Collide;
+                    Result.Enemy = Enemy;
+                    Result.Bullet = null;
+                    return Result;
                 }
 
                 // hits by player
-                foreach (Bullet Bullet in this.Bullets) {
-                    if (Bullet.CheckType(BulletType.Player)) {
+                foreach (Bullet Bullet in this.Bullets)
+                {
+                    if (Bullet.CheckType(BulletType.Player))
+                    {
                         if (IsCollides(Enemy.GetPosition(), Enemy.GetSize(),
-                                Bullet.GetPosition(), Bullet.GetSize(), 0, 10)) {
+                                Bullet.GetPosition(), Bullet.GetSize(), 0, 10))
+                        {
                             Result.Type = CollideType.HitInEnemy;
                             Result.Enemy = Enemy;
                             Result.Bullet = Bullet;
@@ -79,14 +88,17 @@ namespace game
             }
 
             // hits by enemy
-            foreach (Bullet Bullet in this.Bullets) {
-                if (Bullet.CheckType(BulletType.Enemy)) {
+            foreach (Bullet Bullet in this.Bullets)
+            {
+                if (Bullet.CheckType(BulletType.Enemy))
+                {
                     if (IsCollides(Bullet.GetPosition(), Bullet.GetSize(),
-                            Player.GetPosition(), Player.GetSize(), 5, 5)) {
-                            Result.Type = CollideType.HitInPlayer;
-                            Result.Enemy = null;
-                            Result.Bullet = Bullet;
-                            return Result;
+                            Player.GetPosition(), Player.GetSize(), 5, 5))
+                    {
+                        Result.Type = CollideType.HitInPlayer;
+                        Result.Enemy = null;
+                        Result.Bullet = Bullet;
+                        return Result;
                     }
                 }
             }
@@ -94,8 +106,9 @@ namespace game
             return Result;
         }
 
-        
-        public bool IsCollides(Point Pos1, Size Size1, Point Pos2, Size Size2, int MarginX = 0, int MarginY = 0) {
+
+        public bool IsCollides(Point Pos1, Size Size1, Point Pos2, Size Size2, int MarginX = 0, int MarginY = 0)
+        {
             return
                 Pos1.X + Size1.Width >= Pos2.X + MarginX &&
                 Pos1.X - Size2.Width <= Pos2.X - MarginX &&

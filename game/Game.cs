@@ -36,7 +36,7 @@ namespace game
         private Collision Collision;
         private List<Enemy> Enemies;
         private List<Explosion> Explosions;
-        private List<Heal> Heals; 
+        private List<Heal> Heals;
 
         private int PlayerLevel;
         private int GameLevel;
@@ -80,12 +80,14 @@ namespace game
         private const int FramesPerSecond = 60;
         private const int ExplosionsMaxCount = 5;
 
-        public void Init() {
+        public void Init()
+        {
             this.GameStatus = GameStatus.Menu;
 
             this.MaxEnemyImages = 0;
             ResourceManager resman = game.Properties.Resources.ResourceManager;
-            while (resman.GetObject("enemy" + this.MaxEnemyImages) != null) {
+            while (resman.GetObject("enemy" + this.MaxEnemyImages) != null)
+            {
                 this.MaxEnemyImages++;
             }
 
@@ -111,43 +113,52 @@ namespace game
             this.Collision = new Collision(ref this.Bullets, ref this.Enemies, ref this.Player, ref this.Heals);
         }
 
-        public void Draw(object sender, PaintEventArgs e) {
+        public void Draw(object sender, PaintEventArgs e)
+        {
             Graphics g = e.Graphics;
 
             Point position = new Point(0, 0);
             Size size = this.Scene.BackgroundImg.Size;
             g.DrawImage(this.Scene.BackgroundImg, new Rectangle(position, size));
 
-            if (this.GameStatus == GameStatus.Menu) {
+            if (this.GameStatus == GameStatus.Menu)
+            {
                 this.DrawMessage(g, "Click for start", 24);
             }
 
-            if (this.GameStatus == GameStatus.Game) {
+            if (this.GameStatus == GameStatus.Game)
+            {
                 this.Player.Draw(g);
             }
 
-            if (this.GameStatus == GameStatus.Game || this.GameStatus == GameStatus.End) {
-                foreach (Explosion explosion in this.Explosions) {
+            if (this.GameStatus == GameStatus.Game || this.GameStatus == GameStatus.End)
+            {
+                foreach (Explosion explosion in this.Explosions)
+                {
                     explosion.Draw(g);
                 }
 
-                foreach (Heal heal in this.Heals) {
+                foreach (Heal heal in this.Heals)
+                {
                     heal.Draw(g);
                 }
 
-                foreach (Character enemy in this.Enemies) {
+                foreach (Character enemy in this.Enemies)
+                {
                     enemy.Draw(g);
                 }
 
-                foreach (Bullet bullet in this.Bullets) {
+                foreach (Bullet bullet in this.Bullets)
+                {
                     bullet.Draw(g);
                 }
 
 
-                if (this.GameStatus == GameStatus.End) {
+                if (this.GameStatus == GameStatus.End)
+                {
                     this.DrawMessage(g, "Game Over\n\nClick, click, click", 24);
                 }
-                
+
                 this.DrawHealth(g);
                 this.DrawScore(g);
                 this.DrawGameLevel(g);
@@ -155,44 +166,57 @@ namespace game
             }
         }
 
-        public void Timer(Object sender, EventArgs e) {
+        public void Timer(Object sender, EventArgs e)
+        {
             int ticks = Environment.TickCount;
-            if (ticks > this.LastTime + 1000 / Game.FramesPerSecond) {
+            if (ticks > this.LastTime + 1000 / Game.FramesPerSecond)
+            {
                 Collide collide = this.Collision.Check();
-                
-                if (this.GameStatus == GameStatus.Game || this.GameStatus == GameStatus.End) {
-                    for (int i = this.Bullets.Count - 1; i != -1; i--) {
+
+                if (this.GameStatus == GameStatus.Game || this.GameStatus == GameStatus.End)
+                {
+                    for (int i = this.Bullets.Count - 1; i != -1; i--)
+                    {
                         int result = this.Bullets[i].Move(this.Scene);
 
-                        if (result == 0) {
+                        if (result == 0)
+                        {
                             this.Bullets.RemoveAt(i);
                         }
                     }
 
-                    IEnumerable<Explosion> ReverseExplosion =  this.Explosions.Reverse<Explosion>();
-                    foreach (Explosion explosion in ReverseExplosion) {
-                        if (explosion.IsDone()) {
+                    IEnumerable<Explosion> ReverseExplosion = this.Explosions.Reverse<Explosion>();
+                    foreach (Explosion explosion in ReverseExplosion)
+                    {
+                        if (explosion.IsDone())
+                        {
                             this.Explosions.Remove(explosion);
-                        } else {
+                        }
+                        else
+                        {
                             explosion.Update();
                         }
                     }
 
-                    foreach (Heal heal in this.Heals) {
+                    foreach (Heal heal in this.Heals)
+                    {
                         heal.Update();
                     }
 
-                    if (collide.Type == CollideType.TakeHeal) {
+                    if (collide.Type == CollideType.TakeHeal)
+                    {
                         this.Player.AddHealth(1);
                         this.Heals.Remove(collide.Heal);
                     }
 
-                    if (collide.Type == CollideType.HitInEnemy) {
+                    if (collide.Type == CollideType.HitInEnemy)
+                    {
                         this.IncreaseScore();
                         this.AddExplosion(collide.Enemy);
 
                         Random rand = new Random();
-                        if (rand.Next(5) == 0) {
+                        if (rand.Next(5) == 0)
+                        {
                             this.AddHeal(collide.Enemy);
                         }
 
@@ -202,37 +226,44 @@ namespace game
 
                     this.LastTime = ticks;
                 }
-                
-                if (this.GameStatus == GameStatus.Game) {
+
+                if (this.GameStatus == GameStatus.Game)
+                {
                     IEnumerable<Enemy> ReverseEnemy = this.Enemies.Reverse<Enemy>();
-                    foreach (Enemy enemy in ReverseEnemy) {
+                    foreach (Enemy enemy in ReverseEnemy)
+                    {
                         int result = enemy.Move(this.Scene);
 
-                        if (ticks > this.LastEnemyShootTime + this.EnemyShootDelay) {
+                        if (ticks > this.LastEnemyShootTime + this.EnemyShootDelay)
+                        {
                             enemy.Shoot(ref this.Bullets);
 
                             this.LastEnemyShootTime = ticks;
                         }
 
-                        if (result == 0) {
+                        if (result == 0)
+                        {
                             this.Enemies.Remove(enemy);
                         }
                     }
-                    
-                    if (ticks > this.LastIncreaseLevelTime + Game.IncreaseLevelDelay) {
+
+                    if (ticks > this.LastIncreaseLevelTime + Game.IncreaseLevelDelay)
+                    {
                         this.EnemyCreateDelay = Game.BaseEnemyCreateDelay - Game.StepEnemyCreateDelay * this.GameLevel;
                         this.EnemyShootDelay = Game.BaseEnemyShootDelay - Game.StepEnemyShootDelay * this.GameLevel;
                         this.EnemySpeed = Game.BaseEnemySpeed + Game.StepEnemySpeed * this.GameLevel / 2;
                         this.EnemyShootSpeed = Game.BaseEnemyShootSpeed + Game.StepEnemyShootSpeed * this.GameLevel;
 
-                        if (this.GameLevel < Game.MaxLevel) {
+                        if (this.GameLevel < Game.MaxLevel)
+                        {
                             this.GameLevel++;
                         }
 
                         this.LastIncreaseLevelTime = ticks;
                     }
 
-                    if (ticks > this.EnemyCreateTime + this.EnemyCreateDelay) {
+                    if (ticks > this.EnemyCreateTime + this.EnemyCreateDelay)
+                    {
                         Random rand = new Random();
 
                         Enemy enemy = new Enemy((Bitmap)game.Properties.Resources.ResourceManager.GetObject("enemy" + rand.Next(this.MaxEnemyImages)));
@@ -256,35 +287,45 @@ namespace game
                         this.EnemyCreateTime = ticks;
                     }
 
-                    if (this.PlayerStatus.MouseHold) {
+                    if (this.PlayerStatus.MouseHold)
+                    {
                         this.Player.Shoot(ref this.Bullets);
                     }
 
 
-                    if (this.Score > 0 && this.Score % 10 == 0 && !this.LevelUpdated) {
-                        if (this.PlayerLevel < Game.MaxPlayerLevel) {
+                    if (this.Score > 0 && this.Score % 10 == 0 && !this.LevelUpdated)
+                    {
+                        if (this.PlayerLevel < Game.MaxPlayerLevel)
+                        {
                             this.PlayerLevel++;
                             this.LevelUpdated = true;
 
                             this.Player.CharacterShoot.SetSpeed(Game.BasePlayerShootSpeed + Game.StepPlayerShootSpeed * this.PlayerLevel);
                             this.Player.CharacterShoot.SetReloadTime(Game.BasePlayerReloadTime + Game.StepPlayerReloadTime * this.PlayerLevel);
                         }
-                    } else if (this.Score % 10 == 1)  {
+                    }
+                    else if (this.Score % 10 == 1)
+                    {
                         this.LevelUpdated = false;
                     }
 
-                    if (collide.Type == CollideType.HitInPlayer || collide.Type == CollideType.Collide) {
+                    if (collide.Type == CollideType.HitInPlayer || collide.Type == CollideType.Collide)
+                    {
                         this.AddExplosion(this.Player);
 
                         this.Player.AddHealth(-1);
-                        if (this.Player.GetHealth() < 1) {
+                        if (this.Player.GetHealth() < 1)
+                        {
                             this.GameStatus = GameStatus.End;
                         }
                     }
 
-                    if (collide.Type == CollideType.HitInPlayer) {
+                    if (collide.Type == CollideType.HitInPlayer)
+                    {
                         this.Bullets.Remove(collide.Bullet);
-                    } else if (collide.Type == CollideType.Collide) {
+                    }
+                    else if (collide.Type == CollideType.Collide)
+                    {
                         this.AddExplosion(collide.Enemy);
                         this.Enemies.Remove(collide.Enemy);
                     }
@@ -294,24 +335,31 @@ namespace game
             }
         }
 
-        public void MouseMove(MouseEventArgs e) {
-            if (this.GameStatus == GameStatus.End) {
+        public void MouseMove(MouseEventArgs e)
+        {
+            if (this.GameStatus == GameStatus.End)
+            {
                 return;
             }
             this.Player.Move(this.Scene, e.X, e.Y);
         }
 
-        public void MouseDown(MouseEventArgs e) {
-            if (this.GameStatus == GameStatus.Game) {
+        public void MouseDown(MouseEventArgs e)
+        {
+            if (this.GameStatus == GameStatus.Game)
+            {
                 this.PlayerStatus.MouseHold = true;
 
                 this.Player.Shoot(ref this.Bullets);
             }
         }
 
-        public void MouseUp(MouseEventArgs e) {
-            if (this.GameStatus == GameStatus.Menu || this.GameStatus == GameStatus.End) {
-                if (!this.PlayerStatus.MouseHold) {
+        public void MouseUp(MouseEventArgs e)
+        {
+            if (this.GameStatus == GameStatus.Menu || this.GameStatus == GameStatus.End)
+            {
+                if (!this.PlayerStatus.MouseHold)
+                {
                     this.GameStart();
                 }
             }
@@ -319,7 +367,8 @@ namespace game
             this.PlayerStatus.MouseHold = false;
         }
 
-        public void GameStart() {
+        public void GameStart()
+        {
             this.GameStatus = GameStatus.Game;
             this.Score = 0;
             this.GameLevel = 1;
@@ -344,7 +393,8 @@ namespace game
             this.LastEnemyShootTime = ticks;
         }
 
-        public void DrawMessage(Graphics g, String text, int fontSize = 16) {
+        public void DrawMessage(Graphics g, String text, int fontSize = 16)
+        {
             Point position = new Point(0, 0);
             Size size = this.Scene.BackgroundImg.Size;
             g.DrawImage(this.Scene.OverlayImg, new Rectangle(position, size));
@@ -359,7 +409,8 @@ namespace game
             g.DrawString(drawString, drawFont, drawBrush, drawPoint, drawFormat);
         }
 
-        private void AddHeal(Character character) {
+        private void AddHeal(Character character)
+        {
             Point HealPos = character.GetCenterPosition();
             Size HealSize = new Size(32, 32);
 
@@ -371,8 +422,10 @@ namespace game
             this.Heals.Add(heal);
         }
 
-        private void AddExplosion(Character Character) {
-            if (this.Explosions.Count() > Game.ExplosionsMaxCount) {
+        private void AddExplosion(Character Character)
+        {
+            if (this.Explosions.Count() > Game.ExplosionsMaxCount)
+            {
                 return;
             }
 
@@ -387,11 +440,13 @@ namespace game
             this.Explosions.Add(explosion);
         }
 
-        public int GetScore() {
+        public int GetScore()
+        {
             return this.Score;
         }
 
-        public void SetScore(int score) {
+        public void SetScore(int score)
+        {
             this.Score = score;
         }
 
@@ -405,7 +460,8 @@ namespace game
             g.DrawString(drawString, drawFont, drawBrush, drawPoint);
         }
 
-        public void DrawScore(Graphics g) {
+        public void DrawScore(Graphics g)
+        {
             String drawString = "Score: " + this.GetScore();
             Font drawFont = new Font(FontFamily.GenericSansSerif, 16);
             SolidBrush drawBrush = new SolidBrush(Color.White);
@@ -414,7 +470,8 @@ namespace game
             g.DrawString(drawString, drawFont, drawBrush, drawPoint);
         }
 
-        public void DrawGameLevel(Graphics g) {
+        public void DrawGameLevel(Graphics g)
+        {
             String drawString = "Difficulty: " + this.GameLevel;
             Font drawFont = new Font(FontFamily.GenericSansSerif, 10);
             SolidBrush drawBrush = new SolidBrush(Color.White);
@@ -423,7 +480,8 @@ namespace game
             g.DrawString(drawString, drawFont, drawBrush, drawPoint);
         }
 
-        public void DrawPlayerLevel(Graphics g) {
+        public void DrawPlayerLevel(Graphics g)
+        {
             String drawString = "Level: " + this.PlayerLevel;
             Font drawFont = new Font(FontFamily.GenericSansSerif, 10);
             SolidBrush drawBrush = new SolidBrush(Color.White);
@@ -432,15 +490,18 @@ namespace game
             g.DrawString(drawString, drawFont, drawBrush, drawPoint);
         }
 
-        public void IncreaseScore(int value = 1) {
+        public void IncreaseScore(int value = 1)
+        {
             this.Score += value;
         }
 
-        public void SetStatus(GameStatus Status) {
+        public void SetStatus(GameStatus Status)
+        {
             this.GameStatus = Status;
         }
 
-        public GameStatus GetStatus() {
+        public GameStatus GetStatus()
+        {
             return this.GameStatus;
         }
     }

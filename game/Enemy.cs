@@ -7,25 +7,32 @@ namespace game
     {
         private int Speed;
 
-        public Enemy(Image image) {
+        public Enemy(Image image)
+        {
             this.SetImage(image);
             this.SetSize(image.Size);
         }
 
-        public void SetSpeed(int speed) {
+        public void SetSpeed(int speed)
+        {
             this.Speed = speed;
         }
 
-        public int GetSpeed() {
+        public int GetSpeed()
+        {
             return this.Speed;
         }
 
-        public int Move(Scene GameScene) {
+        public int Move(Scene GameScene)
+        {
             Point NewPosition = new Point(this.Position.X, this.Position.Y + this.GetSpeed());
 
-            if (NewPosition.Y <= -this.Size.Height) {
+            if (NewPosition.Y <= -this.Size.Height)
+            {
                 return 0;
-            } else if (NewPosition.Y >= GameScene.Size.Height) {
+            }
+            else if (NewPosition.Y >= GameScene.Size.Height)
+            {
                 return 0;
             }
 
@@ -33,7 +40,8 @@ namespace game
             return 1;
         }
 
-        public int Shoot(ref List<Bullet> bullets) {
+        public int Shoot(ref List<Bullet> bullets)
+        {
             this.Shoot(ref bullets, BulletType.Enemy);
             return 1;
         }

@@ -14,7 +14,8 @@ namespace game
         private bool IsOnce;
         private double Index;
 
-        public Sprite(Point DrawPosition, Image Image, Point Position, Size Size, int Speed, int FramesCount, bool IsOnce) {
+        public Sprite(Point DrawPosition, Image Image, Point Position, Size Size, int Speed, int FramesCount, bool IsOnce)
+        {
             this.DrawPosition = DrawPosition;
             this.Image = Image;
             this.Position = Position;
@@ -23,21 +24,27 @@ namespace game
             this.FramesCount = FramesCount;
             this.IsOnce = IsOnce;
         }
-        
-        public void Update() {
+
+        public void Update()
+        {
             this.Index += this.Speed;
         }
 
-        public void Draw(Graphics g) {
+        public void Draw(Graphics g)
+        {
             int frame;
 
-            if (this.Speed > 0) {
+            if (this.Speed > 0)
+            {
                 frame = Convert.ToInt32(Math.Floor(this.Index)) % this.FramesCount;
 
-                if (this.IsDone()) {
+                if (this.IsDone())
+                {
                     return;
                 }
-            } else {
+            }
+            else
+            {
                 frame = 0;
             }
 
@@ -46,7 +53,8 @@ namespace game
             g.DrawImage(this.Image, new Rectangle(DrawPosition, this.Size), new Rectangle(Pos, this.Size), GraphicsUnit.Pixel);
         }
 
-        public bool IsDone() {
+        public bool IsDone()
+        {
             return (this.IsOnce && Convert.ToInt32(Math.Floor(this.Index)) >= this.FramesCount);
         }
     }
